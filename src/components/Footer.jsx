@@ -37,7 +37,7 @@ const FooterLink = ({ to, children, className = "" }) => {
   );
 };
 
-const SocialLink = ({ href, icon, label }) => (
+const SocialLink = ({ href, icon: Icon, label }) => (
   <motion.a
     href={href}
     target="_blank"
@@ -48,9 +48,33 @@ const SocialLink = ({ href, icon, label }) => (
     whileTap={{ scale: 0.95 }}
   >
     <div className="text-gray-400 group-hover:text-white transition-colors duration-300">
-      {icon}
+      <Icon className="h-5 w-5" />
     </div>
   </motion.a>
+);
+
+const ContactItem = ({ icon: Icon, text, link }) => (
+  <motion.li
+    className="flex items-start space-x-3 text-gray-400 hover:text-white transition-colors duration-300"
+    whileHover={{ x: 5 }}
+    whileTap={{ scale: 0.95 }}
+    initial={{ opacity: 0, x: -20 }}
+    animate={{ opacity: 1, x: 0 }}
+  >
+    <span className="mt-1">
+      <Icon className="h-5 w-5" />
+    </span>
+    {link ? (
+      <a
+        href={link}
+        className="hover:text-blue-400 transition-colors duration-300"
+      >
+        {text}
+      </a>
+    ) : (
+      <span>{text}</span>
+    )}
+  </motion.li>
 );
 
 const Footer = () => {
@@ -158,27 +182,11 @@ const Footer = () => {
           <FooterSection title="Contact">
             <ul className="space-y-4">
               {contactInfo.map((info, index) => (
-                <motion.li
+                <ContactItem
                   key={index}
-                  className="flex items-start space-x-3 text-gray-400 hover:text-white transition-colors duration-300"
-                  whileHover={{ x: 5 }}
-                  whileTap={{ scale: 0.95 }}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
+                  {...info}
                   transition={{ delay: index * 0.1 }}
-                >
-                  <span className="mt-1">{info.icon}</span>
-                  {info.link ? (
-                    <a
-                      href={info.link}
-                      className="hover:text-blue-400 transition-colors duration-300"
-                    >
-                      {info.text}
-                    </a>
-                  ) : (
-                    <span>{info.text}</span>
-                  )}
-                </motion.li>
+                />
               ))}
             </ul>
           </FooterSection>
